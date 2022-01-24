@@ -66,22 +66,75 @@ query = gql("""
     }
 """)
 
+# me
 # query = gql("""
 #     query {
-#         rateLimitData {
-#             limitPerHour
+#         characterData{
+#             character(id: 17421979) {
+#             zoneRankings(zoneID: 42)
+#             }
+#         }
+#     }
+# """)
+
+# Kimi
+query = gql("""
+    query {
+        characterData{
+            character(name: "K'imi Verona"
+                    serverSlug: "Coeurl"
+                    serverRegion: "NA"
+            ) {
+            encounterRankings(encounterID: 1058)
+            }
+        }
+    }
+""")
+# query = gql("""
+#     query {
+#         characterData{
+#             character(name: "K'imi Verona"
+#                     serverSlug: "Coeurl"
+#                     serverRegion: "NA"
+#             ) {
+#             zoneRankings(zoneID: 0)
+#             }
 #         }
 #     }
 # """)
 
 
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {token}"
-}
+# report
+query = gql("""
+    query {
+        reportData{
+            report(code: "p74QHJhZ2cB8FmXa"){
+                fights {
+                    averageItemLevel
+                    bossPercentage
+                    fightPercentage
+                    name
+                }
+            }
+        }
+    }
+""")
+
+# rate limit
+# query = gql("""
+#     query {
+#         rateLimitData {
+#             limitPerHour
+#             pointsSpentThisHour
+#             pointsResetIn
+#         }
+#     }
+# """)
+
 
 
 
 # Execute the query on the transport
 result = client.execute(query)
-print(result)
+# print(result)
+print(json.dumps(result, indent=4, sort_keys=True))
