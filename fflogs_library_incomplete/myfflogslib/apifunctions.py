@@ -5,6 +5,21 @@ import json
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 
+'''
+TODO:
+Functions:
+- getGuildSummary
+- getReportSummary
+- updateServers (half done -> have to organize and save data somewhere)
+- updateEncounters/updateZones
+
+Save data to db/file:
+- All data centers and their respective worlds
+- All zones with encounters and patch cycles 
+Other:
+- Return result of query instead of just printing it
+'''
+
 # Optain clientID and clientSecret from .json file
 f = open('client_info.json')
 clientInfo = json.load(f)
@@ -63,10 +78,35 @@ def getRateLimit():
     print(json.dumps(result, indent=4, sort_keys=True))
 
 
+def updateServers():
+    client = setupClient()
+    query = gql("""
+        query {
+            worldData{
+                regions {
+                    compactName
+                    subregions {
+                        name
+                        servers {
+                            data {
+                                name
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    """)
+    result = client.execute(query)
+    print(json.dumps(result, indent=4, sort_keys=True))
+
+
+
 
 def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
     client = setupClient()
 
+    # GQL Query by character ID
     if id != 0:
         query = gql(f"""
             query {{
@@ -78,6 +118,7 @@ def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
             }}
         """)
 
+    # GQL Query by Name, Slug, and Region
     elif (name and serverSlug and serverRegion != ""):
         query = gql(f"""
             query {{
@@ -94,3 +135,14 @@ def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
 
     result = client.execute(query)
     print(json.dumps(result, indent=4, sort_keys=True))
+
+
+
+def getGuildSummary():
+    pass
+
+
+
+def getReportSummary():
+    pass
+

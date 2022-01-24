@@ -5,5 +5,7 @@ refreshToken()
 
 # getRateLimit()
 
+updateServers()
+
 # getCharSummary(id=17421979)
-getCharSummary("K'imi Verona", "Coeurl", "NA")
+# getCharSummary("K'imi Verona", "Coeurl", "NA")
