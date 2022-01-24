@@ -29,6 +29,7 @@ token = response.json()['access_token']
 
 
 # -------------------------------------------------------
+# character stuff
 
 headers = {
     "Content-Type": "application/json",
@@ -42,29 +43,30 @@ transport = AIOHTTPTransport(url=FFLOGS_URL, headers=headers)
 client = Client(transport=transport, fetch_schema_from_transport=True)
 
 # Provide a GraphQL query
-query = gql(
-    """
-    query getContinents {
-      continents {
-        code
-        name
-      }
-    }
-"""
-)
+# query = gql(
+#     """
+#     query getContinents {
+#       continents {
+#         code
+#         name
+#       }
+#     }
+# """
+# )
 
-query = gql("""
-    query {
-        characterData{
-            character(name: "Calad Baal"
-                    serverSlug: "Spriggan"
-                    serverRegion: "EU"
-            ) {
-            zoneRankings(zoneID: 0)
-            }
-        }
-    }
-""")
+# OG bot maker
+# query = gql("""
+#     query {
+#         characterData{
+#             character(name: "Calad Baal"
+#                     serverSlug: "Spriggan"
+#                     serverRegion: "EU"
+#             ) {
+#             zoneRankings(zoneID: 0)
+#             }
+#         }
+#     }
+# """)
 
 # me
 # query = gql("""
@@ -78,18 +80,18 @@ query = gql("""
 # """)
 
 # Kimi
-query = gql("""
-    query {
-        characterData{
-            character(name: "K'imi Verona"
-                    serverSlug: "Coeurl"
-                    serverRegion: "NA"
-            ) {
-            encounterRankings(encounterID: 1058)
-            }
-        }
-    }
-""")
+# query = gql("""
+#     query {
+#         characterData{
+#             character(name: "K'imi Verona"
+#                     serverSlug: "Coeurl"
+#                     serverRegion: "NA"
+#             ) {
+#             encounterRankings(encounterID: 1058)
+#             }
+#         }
+#     }
+# """)
 # query = gql("""
 #     query {
 #         characterData{
@@ -104,32 +106,121 @@ query = gql("""
 # """)
 
 
-# report
+
+# -------------------------------------------------------
+# world data stuff
+
+# Add zones and encounters to the database
+# -------------------------------------------------------------
+# tataru add_zones
+
+# all zones with encounters and patch cycles 
 query = gql("""
-    query {
-        reportData{
-            report(code: "p74QHJhZ2cB8FmXa"){
-                fights {
-                    averageItemLevel
-                    bossPercentage
-                    fightPercentage
-                    name
+        query {
+            worldData{
+            expansions{
+            zones {
+                difficulties{id, name}
+                id
+                name
+                frozen
+                brackets {
+                min
+                max
+                }
+                encounters {
+                id
+                name
                 }
             }
-        }
-    }
+            }
+            }
+        }      
 """)
 
-# rate limit
+query = gql("""
+        query {
+            worldData{
+                expansions{
+                    name
+                    zones {
+                        difficulties{id, name}
+                        id
+                        name
+                        frozen
+                        brackets {
+                            min
+                            max
+                        }
+                        encounters {
+                            id
+                            name
+                        }
+                    }
+                }
+            }
+        }      
+""")
+
+# All data centers and their respective worlds
+# query = gql("""
+#         query {
+#           worldData{
+#             regions{
+#               compactName
+#               servers {
+#                 data {
+#                   name
+#                   subregion {
+#                       name
+#                   }
+#                 }
+#               }
+#             }
+#           }
+#         }
+# """)
+# This one (mine) just works way better
+# query = gql("""
+#         query {
+#             worldData{
+#                 regions {
+#                     compactName
+#                     subregions {
+#                         name
+#                         servers {
+#                             data {
+#                                 name
+#                             }
+#                         }
+#                     }
+#                 }
+#             }
+#         }
+# """)
+
+
+# -------------------------------------------------------
+
+
+
+# report
 # query = gql("""
 #     query {
-#         rateLimitData {
-#             limitPerHour
-#             pointsSpentThisHour
-#             pointsResetIn
+#         reportData{
+#             report(code: "p74QHJhZ2cB8FmXa"){
+#                 fights {
+#                     averageItemLevel
+#                     bossPercentage
+#                     fightPercentage
+#                     name
+#                 }
+#             }
 #         }
 #     }
 # """)
+
+
 
 
 
