@@ -185,8 +185,38 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 # -------------------------------------------------------
 # guild stuff
 
+# Guild members
+query = gql("""
+    query {
+        guildData {
+            guild (id: 91390) {
+                faction {
+                    name
+                }
+                id
+                name
+                server {name}
+                members {
+                    data {
+                        canonicalID
+                        name
+                        server {name}
+                        lodestoneID
+                    }
+                }
+            }
+        }
+        
+    }
+""")
 
-# report
+# Guild rankings
+
+
+
+# -------------------------------------------------------
+# report stuff
+
 # query = gql("""
 #     query {
 #         reportData{
@@ -201,14 +231,6 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 #         }
 #     }
 # """)
-
-
-
-
-# -------------------------------------------------------
-# report stuff
-
-
 
 
 # Execute the query on the transport
