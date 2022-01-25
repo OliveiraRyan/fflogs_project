@@ -10,14 +10,20 @@ TODO:
 Functions:
 - getGuildSummary
 - getReportSummary
-- updateServers (half done -> have to organize and save data somewhere)
-- updateEncounters/updateZones
+
 
 Save data to db/file:
 - All data centers and their respective worlds
-- All zones with encounters and patch cycles 
+    - updateServers (half done -> have to organize and save data somewhere)
+- All zones with encounters and patch cycles
+    - updateEncounters/updateZones (half done -> have to organize and save data somewhere)
+
 Other:
 - Return result of query instead of just printing it
+
+DONE:
+Functions:
+- prettyPrint
 '''
 
 # Optain clientID and clientSecret from .json file
@@ -78,6 +84,12 @@ def getRateLimit():
     print(json.dumps(result, indent=4, sort_keys=True))
 
 
+def prettyPrint(result):
+    print(json.dumps(result, indent=4, sort_keys=True))
+
+
+
+
 def updateServers():
     client = setupClient()
     query = gql("""
@@ -98,9 +110,36 @@ def updateServers():
         }
     """)
     result = client.execute(query)
-    print(json.dumps(result, indent=4, sort_keys=True))
+    prettyPrint(result)
 
 
+def updateEncounters():
+    client = setupClient()
+    query = gql("""
+            query {
+                worldData{
+                    expansions{
+                        name
+                        zones {
+                            difficulties{id, name}
+                            id
+                            name
+                            frozen
+                            brackets {
+                                min
+                                max
+                            }
+                            encounters {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+            }      
+    """)
+    result = client.execute(query)
+    prettyPrint(result)
 
 
 def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
@@ -134,7 +173,7 @@ def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
         """)
 
     result = client.execute(query)
-    print(json.dumps(result, indent=4, sort_keys=True))
+    prettyPrint(result)
 
 
 

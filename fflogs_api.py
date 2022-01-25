@@ -28,6 +28,8 @@ token = response.json()['access_token']
 # print(token)
 
 
+
+
 # -------------------------------------------------------
 # character stuff
 
@@ -107,6 +109,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 
 
 
+
 # -------------------------------------------------------
 # world data stuff
 
@@ -115,52 +118,29 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 # tataru add_zones
 
 # all zones with encounters and patch cycles 
-query = gql("""
-        query {
-            worldData{
-            expansions{
-            zones {
-                difficulties{id, name}
-                id
-                name
-                frozen
-                brackets {
-                min
-                max
-                }
-                encounters {
-                id
-                name
-                }
-            }
-            }
-            }
-        }      
-""")
-
-query = gql("""
-        query {
-            worldData{
-                expansions{
-                    name
-                    zones {
-                        difficulties{id, name}
-                        id
-                        name
-                        frozen
-                        brackets {
-                            min
-                            max
-                        }
-                        encounters {
-                            id
-                            name
-                        }
-                    }
-                }
-            }
-        }      
-""")
+# query = gql("""
+#         query {
+#             worldData{
+#                 expansions{
+#                     name
+#                     zones {
+#                         difficulties{id, name}
+#                         id
+#                         name
+#                         frozen
+#                         brackets {
+#                             min
+#                             max
+#                         }
+#                         encounters {
+#                             id
+#                             name
+#                         }
+#                     }
+#                 }
+#             }
+#         }      
+# """)
 
 # All data centers and their respective worlds
 # query = gql("""
@@ -200,8 +180,10 @@ query = gql("""
 # """)
 
 
-# -------------------------------------------------------
 
+
+# -------------------------------------------------------
+# guild stuff
 
 
 # report
@@ -221,6 +203,10 @@ query = gql("""
 # """)
 
 
+
+
+# -------------------------------------------------------
+# report stuff
 
 
 
