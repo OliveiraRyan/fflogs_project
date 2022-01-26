@@ -142,30 +142,26 @@ def updateEncounters():
     prettyPrint(result)
 
 
+
+
 def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
     client = setupClient()
 
     # GQL Query by character ID
     if id != 0:
-        query = gql(f"""
-            query {{
-                characterData{{
-                    character(id: {id}) {{
-                        zoneRankings(zoneID: 0)
-                    }}
-                }}
-            }}
-        """)
-
+        info = f'id: {id}'
     # GQL Query by Name, Slug, and Region
     elif (name and serverSlug and serverRegion != ""):
-        query = gql(f"""
+        info = f'name: \"{name}\", serverSlug: \"{serverSlug}\", serverRegion: \"{serverRegion}\"'
+    
+    query = gql(f"""
             query {{
                 characterData {{
-                    character(name: "{name}"
-                    serverSlug: "{serverSlug}"
-                    serverRegion: "{serverRegion}"
-                    ) {{
+                    character({info}) {{
+                        canonicalID
+                        lodestoneID
+                        name
+                        server {{name}}
                         zoneRankings(zoneID: 0)
                     }}
                 }}
