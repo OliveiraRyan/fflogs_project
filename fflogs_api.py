@@ -7,6 +7,12 @@ import json
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 
+'''
+TODO:
+- Guild rankings query
+- Report query/ies
+'''
+
 f = open('client_info.json')
 clientInfo = json.load(f)
 clientID = clientInfo['id']
@@ -189,7 +195,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 query = gql("""
     query {
         guildData {
-            guild (id: 91390) {
+            guild (name: "Crystal Clear", serverSlug: "Mateus", serverRegion: "NA") {
                 faction {
                     name
                 }
@@ -209,6 +215,29 @@ query = gql("""
         
     }
 """)
+
+# query = gql("""
+#     query {
+#         guildData {
+#             guild (id: 91390) {
+#                 faction {
+#                     name
+#                 }
+#                 id
+#                 name
+#                 server {name}
+#                 members {
+#                     data {
+#                         canonicalID
+#                         name
+#                         server {name}
+#                         lodestoneID
+#                     }
+#                 }
+#             }
+#         }
+#     }
+# """)
 
 # Guild rankings
 

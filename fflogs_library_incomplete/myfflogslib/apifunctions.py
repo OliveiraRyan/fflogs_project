@@ -88,6 +88,14 @@ def prettyPrint(result):
     print(json.dumps(result, indent=4, sort_keys=True))
 
 
+def formatInfo(name="", serverSlug="", serverRegion="", id=0):
+    # GQL Query by character ID
+    if id != 0:
+        return f'id: {id}'
+    # GQL Query by Name, Slug, and Region
+    elif (name and serverSlug and serverRegion != ""):
+        return f'name: \"{name}\", serverSlug: \"{serverSlug}\", serverRegion: \"{serverRegion}\"'
+
 
 
 def updateServers():
@@ -147,12 +155,7 @@ def updateEncounters():
 def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
     client = setupClient()
 
-    # GQL Query by character ID
-    if id != 0:
-        info = f'id: {id}'
-    # GQL Query by Name, Slug, and Region
-    elif (name and serverSlug and serverRegion != ""):
-        info = f'name: \"{name}\", serverSlug: \"{serverSlug}\", serverRegion: \"{serverRegion}\"'
+    info = formatInfo(name=name, serverSlug=serverSlug, serverRegion=serverRegion, id=id)
     
     query = gql(f"""
             query {{
@@ -171,6 +174,43 @@ def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
     result = client.execute(query)
     prettyPrint(result)
 
+
+
+
+def getGuildMembers(name="", serverSlug="", serverRegion="", id=0):
+    client = setupClient()
+
+    info = formatInfo(name=name, serverSlug=serverSlug, serverRegion=serverRegion, id=id)
+
+    query = gql(f"""
+        query {{
+            guildData {{
+                guild ({info}) {{
+                    faction {{
+                        name
+                    }}
+                    id
+                    name
+                    server {{name}}
+                    members {{
+                        data {{
+                            canonicalID
+                            name
+                            server {{name}}
+                            lodestoneID
+                        }}
+                    }}
+                }}
+            }}
+        }}
+    """)
+
+    result = client.execute(query)
+    prettyPrint(result)
+
+
+def getGuildRankings():
+    pass
 
 
 def getGuildSummary():
