@@ -8,6 +8,7 @@ from gql.transport.aiohttp import AIOHTTPTransport
 '''
 TODO:
 Functions:
+- getCharSummary
 - getGuildSummary
 - getReportSummary
 
@@ -40,7 +41,9 @@ token = ""
 
 
 
-
+# -------------------------------------------
+# Client Setup Functions
+# -------------------------------------------
 def refreshToken():
     global token
     headers = CaseInsensitiveDict()
@@ -68,7 +71,9 @@ def setupClient():
 
 
 
-
+# -------------------------------------------
+# Inquiry/Diagnostic Functions
+# -------------------------------------------
 def getRateLimit():
     client = setupClient()
     query = gql("""
@@ -84,11 +89,15 @@ def getRateLimit():
     print(json.dumps(result, indent=4, sort_keys=True))
 
 
+
+# -------------------------------------------
+# Information Formating Functions
+# -------------------------------------------
 def prettyPrint(result):
     print(json.dumps(result, indent=4, sort_keys=True))
 
 
-def formatInfo(name="", serverSlug="", serverRegion="", id=0):
+def formatCharInfo(name="", serverSlug="", serverRegion="", id=0):
     # GQL Query by character ID
     if id != 0:
         return f'id: {id}'
@@ -96,8 +105,19 @@ def formatInfo(name="", serverSlug="", serverRegion="", id=0):
     elif (name and serverSlug and serverRegion != ""):
         return f'name: \"{name}\", serverSlug: \"{serverSlug}\", serverRegion: \"{serverRegion}\"'
 
+def formatGuildInfo(guildName="", guildServerSlug="", guildServerRegion="", guildID=0):
+    # GQL Query by guild ID
+    if guildID != 0:
+        return f'guildID: {guildID}'
+    # GQL Query by guildName, guildSlug, and guildRegion
+    elif (guildName and guildServerSlug and guildServerRegion != ""):
+        return f'guildName: \"{guildName}\", guildServerSlug: \"{guildServerSlug}\", guildServerRegion: \"{guildServerRegion}\"'
 
 
+
+# -------------------------------------------
+# Update Local Data Functions
+# -------------------------------------------
 def updateServers():
     client = setupClient()
     query = gql("""
@@ -151,11 +171,13 @@ def updateEncounters():
 
 
 
-
-def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
+# -------------------------------------------
+# Character Info Functions
+# -------------------------------------------
+def getCharRankings(name="", serverSlug="", serverRegion="", id=0):
     client = setupClient()
 
-    info = formatInfo(name=name, serverSlug=serverSlug, serverRegion=serverRegion, id=id)
+    info = formatCharInfo(name=name, serverSlug=serverSlug, serverRegion=serverRegion, id=id)
     
     query = gql(f"""
             query {{
@@ -174,13 +196,16 @@ def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
     result = client.execute(query)
     prettyPrint(result)
 
+def getCharSummary(name="", serverSlug="", serverRegion="", id=0):
+    pass
 
-
-
+# -------------------------------------------
+# Guild Info Functions
+# -------------------------------------------
 def getGuildMembers(name="", serverSlug="", serverRegion="", id=0):
     client = setupClient()
 
-    info = formatInfo(name=name, serverSlug=serverSlug, serverRegion=serverRegion, id=id)
+    info = formatCharInfo(name=name, serverSlug=serverSlug, serverRegion=serverRegion, id=id)
 
     query = gql(f"""
         query {{
@@ -209,8 +234,25 @@ def getGuildMembers(name="", serverSlug="", serverRegion="", id=0):
     prettyPrint(result)
 
 
-def getGuildRankings():
-    pass
+def getGuildRankings(guildName="", guildServerSlug="", guildServerRegion="", guildID=0):
+    client = setupClient()
+
+    info = formatGuildInfo(guildName=guildName, guildServerSlug=guildServerSlug, guildServerRegion=guildServerRegion, guildID=guildID)
+
+    query = gql(f"""
+        query {{
+            reportData {{
+                reports({info}) {{
+                    data {{
+                        rankings
+                    }}
+                }}
+            }}
+        }}
+    """)
+
+    result = client.execute(query)
+    prettyPrint(result)
 
 
 def getGuildSummary():
@@ -218,6 +260,9 @@ def getGuildSummary():
 
 
 
+# -------------------------------------------
+# Report Info Functions
+# -------------------------------------------
 def getReportSummary():
     pass
 

@@ -50,6 +50,7 @@ transport = AIOHTTPTransport(url=FFLOGS_URL, headers=headers)
 # Create a GraphQL client using the defined transport
 client = Client(transport=transport, fetch_schema_from_transport=True)
 
+
 # Provide a GraphQL query
 # query = gql(
 #     """
@@ -61,6 +62,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 #     }
 # """
 # )
+
 
 # OG bot maker
 # query = gql("""
@@ -76,6 +78,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 #     }
 # """)
 
+
 # me
 # query = gql("""
 #     query {
@@ -86,6 +89,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 #         }
 #     }
 # """)
+
 
 # Kimi
 # query = gql("""
@@ -123,6 +127,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 # -------------------------------------------------------------
 # tataru add_zones
 
+
 # all zones with encounters and patch cycles 
 # query = gql("""
 #         query {
@@ -148,6 +153,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 #         }      
 # """)
 
+
 # All data centers and their respective worlds
 # query = gql("""
 #         query {
@@ -166,6 +172,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 #           }
 #         }
 # """)
+
 # This one (mine) just works way better
 # query = gql("""
 #         query {
@@ -192,29 +199,28 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 # guild stuff
 
 # Guild members
-query = gql("""
-    query {
-        guildData {
-            guild (name: "Crystal Clear", serverSlug: "Mateus", serverRegion: "NA") {
-                faction {
-                    name
-                }
-                id
-                name
-                server {name}
-                members {
-                    data {
-                        canonicalID
-                        name
-                        server {name}
-                        lodestoneID
-                    }
-                }
-            }
-        }
-        
-    }
-""")
+# query = gql("""
+#     query {
+#         guildData {
+#             guild (name: "Crystal Clear", serverSlug: "Mateus", serverRegion: "NA") {
+#                 faction {
+#                     name
+#                 }
+#                 id
+#                 name
+#                 server {name}
+#                 members {
+#                     data {
+#                         canonicalID
+#                         name
+#                         server {name}
+#                         lodestoneID
+#                     }
+#                 }
+#             }
+#         }      
+#     }
+# """)
 
 # query = gql("""
 #     query {
@@ -240,7 +246,17 @@ query = gql("""
 # """)
 
 # Guild rankings
-
+query = gql("""
+    query {
+        reportData {
+            reports(guildID: 91390) {
+                data {
+                    rankings
+                }
+            }
+        }
+    }
+""")
 
 
 # -------------------------------------------------------

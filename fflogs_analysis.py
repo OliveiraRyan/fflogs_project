@@ -3,12 +3,16 @@ from fflogs_library_incomplete.myfflogslib.apifunctions import *
 
 refreshToken()
 
-# getRateLimit()
+getRateLimit()
 
 # updateServers()
+# updateEncounters()
 
-# getCharSummary(id=17421979)
-# getCharSummary("K'imi Verona", "Coeurl", "NA")
+# getCharRankings(id=17421979)
+# getCharRankings("K'imi Verona", "Coeurl", "NA")
 
-getGuildMembers(id=91390)
-getGuildMembers("Crystal Clear", "Mateus", "NA")
+# getGuildMembers(id=91390)
+# getGuildMembers("Crystal Clear", "Mateus", "NA")
+
+getGuildRankings(guildID=91390)
+# getGuildRankings("Crystal Clear", "Mateus", "NA")
